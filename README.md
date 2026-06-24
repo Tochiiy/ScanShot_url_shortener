@@ -1,6 +1,6 @@
 # ScanShort
 
-# LiveUrl:
+# LiveUrl: https://scanshot.vercel.app
 
 A URL shortener that generates QR codes. stack — React on the front, Node/Express on the back, MongoDB for storage.
 

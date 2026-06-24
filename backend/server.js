@@ -16,7 +16,7 @@ const app = express();
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    process.env.FRONTEND_URL, // ← your Vercel URL
+    "https://scanshot.vercel.app",
   ],
   credentials: true,
 }));
