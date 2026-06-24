@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <path d="M50,2 L95,18 L95,58 Q95,82 50,98 Q5,82 5,58 L5,18 Z" fill="#059669"/>
+  <path d="M50,12 L85,26 L85,57 Q85,76 50,90 Q15,76 15,57 L15,26 Z" fill="#047857"/>
+  <text x="50" y="62" text-anchor="middle" font-family="system-ui, sans-serif" font-size="36" font-weight="800" fill="white" letter-spacing="-1">SS</text>
+  <circle cx="35" cy="74" r="6" fill="none" stroke="white" stroke-width="2.5"/>
+  <circle cx="65" cy="74" r="6" fill="none" stroke="#6ee7b7" stroke-width="2.5"/>
+  <line x1="41" y1="74" x2="59" y2="74" stroke="white" stroke-width="2" stroke-linecap="round"/>
+</svg>
