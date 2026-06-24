@@ -1,4 +1,3 @@
-
 import express from "express";
 import url from "../models/url.js";
 import { nanoid } from "nanoid";
@@ -6,7 +5,8 @@ import { nanoid } from "nanoid";
 const router = express.Router();
 
 router.get("/healthcheck", (req, res) => {
-  res.status(200).json("welcome:ScanShortly api mounted💘");
+  
+  res.status(200).json({ status: "ok", message: "welcome:ScanShortly api mounted💘" });
 });
 
 router.post("/shorten", async (req, res) => {
@@ -23,13 +23,23 @@ router.post("/shorten", async (req, res) => {
       return res.status(400).json({ error: "invalid url" });
     }
 
+    
+    const existingOriginalUrl = await url.findOne({ originalUrl });
+    if (existingOriginalUrl) {
+      return res.status(200).json({
+        originalUrl: existingOriginalUrl.originalUrl,
+        shortId: existingOriginalUrl.shortId,
+        shortUrl: existingOriginalUrl.shortUrl,
+      });
+    }
+
     let shortId;
-    let existingUrl;
+    let existingShortId;
 
     do {
       shortId = nanoid(8);
-      existingUrl = await url.findOne({ shortId });
-    } while (existingUrl);
+      existingShortId = await url.findOne({ shortId });
+    } while (existingShortId);
 
     const shortUrl = `${process.env.BASE_URL}/${shortId}`;
 
@@ -48,7 +58,7 @@ router.post("/shorten", async (req, res) => {
     });
 
   } catch (error) {
-    console.log("ERROR:", error);
+    console.error("ERROR:", error);
     return res.status(500).json({ error: "There was a server error" });
   }
 });
@@ -56,15 +66,20 @@ router.post("/shorten", async (req, res) => {
 router.get("/:shortId", async (req, res) => {
   try {
     const { shortId } = req.params;
-    const urlDoc = await url.findOne({ shortId });
+    
+    
+    const urlDoc = await url.findOneAndUpdate(
+      { shortId },
+      { $inc: { clicks: 1 } }
+    );
+
     if (urlDoc) {
-      urlDoc.clicks += 1;
-      await urlDoc.save();
       return res.redirect(urlDoc.originalUrl);
     } else {
       return res.status(404).json({ error: "url not found" });
     }
   } catch (error) {
+    console.error("ERROR:", error);
     return res.status(500).json({ error: "There was a server error" });
   }
 });
